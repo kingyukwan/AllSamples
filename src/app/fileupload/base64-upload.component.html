@@ -1,0 +1,22 @@
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" placeholder="Bob" formControlName="name">
+    </div>
+    <div class="form-group">
+      <label for="avatar">Avatar</label>
+      <input type="file" id="avatar" name="filetoupload" (change)="onFileChange($event)" #fileInput>
+      <button type="button" class="btn btn-sm btn-default" (click)="clearFile()">clear file</button>
+    </div>
+    <!-- <ng4-files-click (filesSelect)="filesSelect($event)">
+      <span>Click me to upload</span>
+    </ng4-files-click>
+    <ng4-files-drop (filesSelect)="filesSelect($event)">
+      <div style="display: inline-block; height: 100px; width: 100px; background-color: gray">
+        {{selectedFiles}}
+      </div>
+    </ng4-files-drop> -->
+
+    <button type="submit" [disabled]="form.invalid || loading" class="btn btn-success">Submit <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i></button>
+  </form>
