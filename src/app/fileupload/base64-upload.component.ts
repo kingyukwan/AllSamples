@@ -7,6 +7,7 @@ import {
   Ng4FilesService,
   Ng4FilesConfig
 } from 'angular4-files-upload';
+import { Progress,ProgressHttp } from 'angular-progress-http';
 // import{ FileUploader } from 'angular-file-upload';
 @Component({
   selector: 'base64-upload',
@@ -15,12 +16,14 @@ import {
 export class Base64UploadComponent {
   form: FormGroup;
   loading: boolean = false;
+  percentage: number;
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
   constructor(private fb: FormBuilder,
             private fileuploadservice: FileUploadService,
             private ng4FilesService: Ng4FilesService,
+            private http: ProgressHttp
             // private fileUploader: FileUploader
           ) {
     this.createForm();
@@ -72,8 +75,16 @@ onFileChange(event) {
     //   alert('done!');
     //   this.loading = false;
     // }, 1000);
-    this.fileuploadservice.uploadFile(formModel);
+    // this.fileuploadservice.getProgress(this.progress);
+    // this.fileuploadservice.uploadFile(this.progress,formModel);
+    return this.http.withUploadProgressListener(progress=>this.updateProgress(progress))
+                    .post("/api/file",formModel)
+                    //  .map(result => this.result = result.json().data)
+                    .subscribe();
   }
+  updateProgress(progress: Progress){
+    this.percentage = progress.percentage;
+     console.log(`Uploading ${this.percentage}%`);}
 
   clearFile() {
     this.form.get('avatar').setValue(null);
@@ -82,7 +93,6 @@ onFileChange(event) {
 
   
 public selectedFiles;
-public item: File;
 public filesSelect(selectedFiles: Ng4FilesSelected): void {
     if (selectedFiles.status !== Ng4FilesStatus.STATUS_SUCCESS) {
       this.selectedFiles = 'invalid file !!';

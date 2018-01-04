@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
     "angular-file-upload": "^2.5.0",
+    "angular-progress-http": "^1.0.0",
     "angular4-files-upload": "^1.0.2",
     "body-parser": "^1.17.2",
     "core-js": "^2.4.1",

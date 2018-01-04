@@ -8,6 +8,7 @@ import { Base64UploadComponent } from './fileupload/base64-upload.component';
 import { FileUploadService } from './fileupload.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Ng4FilesModule } from 'angular4-files-upload';
+import { ProgressHttpModule } from "angular-progress-http";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,11 @@ import { Ng4FilesModule } from 'angular4-files-upload';
     BrowserModule,
     HttpModule,
     ReactiveFormsModule,
-    Ng4FilesModule
+    Ng4FilesModule,
+    ProgressHttpModule
+  ],
+  exports:[
+    Base64UploadComponent
   ],
   providers: [DataService, FileUploadService],
   bootstrap: [AppComponent]
