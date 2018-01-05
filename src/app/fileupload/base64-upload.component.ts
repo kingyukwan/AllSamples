@@ -17,6 +17,9 @@ export class Base64UploadComponent {
   form: FormGroup;
   loading: boolean = false;
   percentage: number;
+  filename: string = "";
+  filesize: number=0;
+  hasFile: boolean=false;
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
@@ -32,7 +35,8 @@ export class Base64UploadComponent {
 
   createForm() {
     this.form = this.fb.group({
-      name: ['', Validators.required],
+      // name: ['', Validators],
+      // ctlfilename:[Validators.required],
       avatar: null
     });
   }
@@ -60,7 +64,7 @@ onFileChange(event) {
   private prepareSave(): any {
     let input = new FormData();
     // This can be done a lot prettier; for example automatically assigning values by looping through `this.form.controls`, but we'll keep it as simple as possible here
-    input.append('name', this.form.get('name').value);
+    // input.append('name', this.form.get('name').value);
     input.append('avatar', this.form.get('avatar').value);
     return input;
   }
@@ -81,14 +85,22 @@ onFileChange(event) {
                     .post("/api/file",formModel)
                     //  .map(result => this.result = result.json().data)
                     .subscribe();
+
+
   }
   updateProgress(progress: Progress){
     this.percentage = progress.percentage;
-     console.log(`Uploading ${this.percentage}%`);}
+    console.log(`Uploading ${this.percentage}%`);
+    if(this.percentage == 100) this.loading = false;
+  }
 
   clearFile() {
     this.form.get('avatar').setValue(null);
-    this.fileInput.nativeElement.value = '';
+    // this.fileInput.nativeElement.value = '';
+    this.filename = "";
+    this.filesize = 0;
+    this.hasFile = false;
+    this.percentage = 0;
   }
 
   
@@ -102,11 +114,15 @@ public filesSelect(selectedFiles: Ng4FilesSelected): void {
       // Hnadle error statuses here
     }
 
+    this.selectedFiles = Array.from(selectedFiles.files).map(file => file.name);
     if(selectedFiles.files.length > 0) {
       let file = selectedFiles.files[0];
       this.form.get('avatar').setValue(file);
+      this.filename = file.name;
+      this.filesize = file.size;
+      this.hasFile = true;
     }
-    this.selectedFiles = Array.from(selectedFiles.files).map(file => file.name);
+    // this.filename = this.selectedFiles.files[0].filename;
   }
 
   private testConfig: Ng4FilesConfig = {

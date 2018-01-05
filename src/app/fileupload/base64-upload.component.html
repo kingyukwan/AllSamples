@@ -1,5 +1,5 @@
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" >
     <!-- <div class="form-group">
       <label for="name">Name</label>
       <input type="text" class="form-control" id="name" placeholder="Bob" formControlName="name">
@@ -12,15 +12,26 @@
     <table class="table">
         <thead>
             <tr>
-                <th >Name</th>
-                <th >File</th>
+                <!-- <th >Name</th> -->
+                <th ></th>
+                <th >File Name</th>
+                <th >File Size</th>
                 <th >Progress</th>
             </tr>
         </thead>
         <tbody>
             <tr >
-              <td> <input type="text" class="form-control" id="name" placeholder="Bob" formControlName="name"></td>
-              <td> <input type="file" id="avatar" name="filetoupload" (change)="onFileChange($event)" #fileInput></td>
+              <!-- <td> <input type="text" class="form-control" id="name" placeholder="Bob" formControlName="name"></td> -->
+              <!-- <td> <input type="file" id="avatar" name="filetoupload" (change)="onFileChange($event)" #fileInput></td> -->
+              <td >
+                  <!-- <a class="btn btn-info" role="button"> -->
+                  <ng4-files-click (filesSelect)="filesSelect($event)">
+                        <span class="btn btn-info" role="button">Select</span>
+                  </ng4-files-click>
+                <!-- </a> -->
+              </td>
+              <td><span [innerText]="filename" ></span></td>
+              <td><span *ngIf="filesize>0" [innerText]="filesize"></span></td>
               <td >
                 <div class="progress" style="margin-bottom: 0;">
                     <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': percentage + '%' }"></div>
@@ -31,15 +42,13 @@
         </tr>
       </tbody>
   </table>
-    <!-- <ng4-files-click (filesSelect)="filesSelect($event)">
-      <span>Click me to upload</span>
-    </ng4-files-click>
-    <ng4-files-drop (filesSelect)="filesSelect($event)">
+
+    <!-- <ng4-files-drop (filesSelect)="filesSelect($event)">
       <div style="display: inline-block; height: 100px; width: 100px; background-color: gray">
         {{selectedFiles}}
       </div>
     </ng4-files-drop> -->
 
-    <button type="submit" [disabled]="form.invalid || loading" class="btn btn-success">Submit <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i></button>
+    <button type="submit" (click)="onSubmit()" [disabled]="!hasFile|| loading" class="btn btn-success">Submit <i class="fa fa-spinner fa-spin fa-fw" *ngIf="loading"></i></button>
     <button type="button" class="btn btn-sm btn-default" (click)="clearFile()">clear file</button>
   </form>

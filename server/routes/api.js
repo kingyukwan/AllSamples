@@ -6,6 +6,7 @@ var formidable = require('formidable');
 const path = require('path');
 var xls2Json = require('xls-to-json-lc');
 var xlsx2Json = require("xlsx-to-json-lc");
+var moment = require("moment");
 // Connect
 const connection = (closure) => {
     return MongoClient.connect('mongodb://localhost:27017/mean', (err, db) => {
@@ -69,17 +70,23 @@ router.post('/file', (req, res)=>{
         try{
             var filename = path.basename(file.path);
             if('.xls' == path.extname(filename))
-                xls2Json({   
+                xls2Json({
                             "input": ".\\server\\routes\\uploads\\"+ filename,
                             "output": null,
                             "lowerCaseHeaders": true
-                        },function(err, output){
+                        }
+                    ,function(err, output){
                     console.log("xls2Json finished");
                     if(err){
                         console.log(err);
                         res.json({err_code:0, err_desc:err});
                     }else{
                         if(output){
+                            var json = JSON.parse(output);
+                            console.log("json.length="+json.length);
+                            for(var i = 0;i < json.length;i++){
+                                console.log(parseInt(json["Age"]));
+                            }
                             connection((db)=>{
                                 db.collection('excel').insert(output, function(err, result){
                                     if(err)console.log(err);
@@ -92,7 +99,7 @@ router.post('/file', (req, res)=>{
                     }
                 });
             else if('.xlsx' == path.extname(filename)){
-                xlsx2Json({   
+                xlsx2Json({
                     "input": ".\\server\\routes\\uploads\\"+ filename,
                     "output": null,
                     "lowerCaseHeaders": true
@@ -103,6 +110,12 @@ router.post('/file', (req, res)=>{
                     res.json({err_code:0, err_desc:err});
                 }else{
                     if(output){
+                        console.log("output.length="+output.length);
+                        //type conversion before save to mongodb
+                        for(var i = 0;i < output.length;i++){
+                            output[i]["age"] = parseInt(output[i]["age"]);
+                            output[i]["create date"] = new Date(moment(output[i]["create date"],"YYYY/MM/DD").format());
+                        }
                         connection((db)=>{
                             db.collection('excel').insert(output, function(err, result){
                                 if(err)console.log(err);
