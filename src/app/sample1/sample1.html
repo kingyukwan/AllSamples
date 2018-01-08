@@ -1,0 +1,133 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div style="text-align:center">
+    <!--
+    <ul>
+       <li *ngFor="let user of users">{{ user.cust_name }}</li>
+    </ul>
+    <div *ngFor="let user of users">
+          Customer num: <input type="text" value="{{ user.cust_num }}"><br>
+          Customer name: <input type="text" value="{{ user.cust_name }}"><br>
+    </div>
+    <div>
+        <button (click)="onClickMe()">Click</button><br>
+        Test onclick: <input type="text" value="{{ textreturn }}"><br>
+    </div>
+  -->
+    <div class="container">
+      <form (ngSubmit)="onSubmit(custForm.value)" #custForm="ngForm">
+        <div class="row m-t-20">
+          <h3>Customer Info</h3>
+        </div>
+        <div class="row">
+          <div class="col-md-3 form-group">
+            <label for="custNum">Customer Num: </label>
+            <!--<input type="text" class="form-control" #searchBox id="custNum" name="custNum" ngModel  #custNum="ngModel">-->
+            <input type="text" class="form-control" id="custNum" [(ngModel)]="userGet.num" name="num" value="{{ userGet.num }}" required #num="ngModel">
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="custName">Customer Name: </label>
+            <!--<input *ngFor="let user of users" type="text" class="form-control" id="custName" value="{{ user.cust_name }}">-->
+            <input type="text" class="form-control" id="custName" name="custName" [(ngModel)]="userSub.name" value="{{ userGet.name }}">
+            <!--<input type="text" class="form-control" id="custName" name="custName" [(ngModel)]="test" value="{{ userGet.name }}">-->
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="contactLastName">Customer Last Name: </label>
+            <input type="text" class="form-control" id="contactLastName" name="contactLastName" [(ngModel)]="userSub.contactLastName" value="{{ userGet.contactLastName }}">
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="contactFirstName">Customer First Name: </label>
+            <input type="text" class="form-control" id="contactFirstName" name="contactFirstName" [(ngModel)]="userSub.contactFirstName" value="{{ userGet.contactFirstName }}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 form-group">
+            <label for="phone">Customer Phone: </label>
+            <!--<input type="text" class="form-control" #searchBox id="custNum" name="custNum" ngModel>-->
+            <input type="text" class="form-control" id="phone" name="phone" [(ngModel)]="userSub.phone" value="{{ userGet.phone }}">
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="addressLine1">Address Line 1: </label>
+            <!--<input *ngFor="let user of users" type="text" class="form-control" id="custName" value="{{ user.cust_name }}">-->
+            <input type="text" class="form-control" id="addressLine1" name="addressLine1" [(ngModel)]="userSub.addressLine1" value="{{ userGet.addressLine1 }}">
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="addressLine2">Address Line 2: </label>
+            <input type="text" class="form-control" id="addressLine2" name="addressLine2" [(ngModel)]="userSub.addressLine2" value="{{ userGet.addressLine2 }}">
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="city">City: </label>
+            <input type="text" class="form-control" id="city" name="city" [(ngModel)]="userSub.city" value="{{ userGet.city }}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 form-group">
+            <label for="email">Email: </label>
+            <!--<input type="text" class="form-control" id="email" name="email" ngModel value="{{ userGet.email }}">-->
+            <input type="text" class="form-control" id="email" name="email" [(ngModel)]="userSub.email" value="{{ userGet.email }}" required [pattern]="emailPattern" #email="ngModel">
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="gender">Gender: </label>
+            <input type="text" class="form-control" id="gender" name="gender" [(ngModel)]="userSub.gender" value="{{ userGet.gender }}">
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="creditLimit">Credit Limit: </label>
+            <input type="text" class="form-control" id="creditLimit" name="creditLimit" [(ngModel)]="userSub.creditLimit" value="{{ userGet.creditLimit }}">
+          </div>
+        </div>
+          <!--Orders-->
+        <div class="row m-t-20">
+          <h3>Order Info</h3>
+        </div>
+        <div class="row">
+          <div class="col-md-3 form-group">
+            <label for="ordNum">Order Num: </label>
+            <!--<input type="text" class="form-control" id="ordNum" [(ngModel)]="order.num" name="num">-->
+            <input type="text" class="form-control" id="ordNum" name="ordNum" [(ngModel)]="orderSub.num" value="{{ order.num }}">
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="ordDate">Order Date: </label>
+            <input type="text" class="form-control" id="ordDate" name="ordDate" [(ngModel)]="orderSub.date" value="{{ order.date }}">
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="requiredDate">Required Date: </label>
+            <input type="text" class="form-control" id="requiredDate" name="requiredDate" [(ngModel)]="orderSub.requiredDate" value="{{ order.requiredDate }}">
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="shippedDate">Shipped Date: </label>
+            <input type="text" class="form-control" id="shippedDate" name="shippedDate" [(ngModel)]="orderSub.shippedDate" value="{{ order.shippedDate }}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 form-group">
+            <label for="itemQty">Item Quantity: </label>
+            <input type="text" class="form-control" id="itemQty" name="itemQty" [(ngModel)]="orderSub.itemQty" value="{{ order.itemQty }}">
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="status">Status: </label>
+            <input type="text" class="form-control" id="status" name="status" [(ngModel)]="orderSub.status" value="{{ order.status }}">
+          </div>
+          <div class="col-md-3 form-group">
+            <label for="remarks">Remarks: </label>
+            <input type="text" class="form-control" id="remarks" name="remarks" [(ngModel)]="orderSub.remarks" value="{{ order.remarks }}">
+          </div>
+        </div>
+        <div [hidden]="!succeed"><h6>Order submitted successfully.</h6></div>
+        <div *ngIf="num.invalid">
+          Customer number is required.
+        </div>
+        <div *ngIf="email.errors"> 
+            Primary Email not valid.
+        </div> 
+        <!--<div><h6>{{ return }}</h6></div>-->
+        <input type="button" class="btn" (click)="reset()" value="Reset" />
+        <input type="button" class="btn" (click)="loadData(custForm.value)" value="Load Data" />
+        <!--<input type="button" class="btn" (click)="loadData(custForm.value)" value="Update" />-->
+        <!--<button type="submit" class="btn btn-success">Submit</button>-->
+        <button type="submit" class="btn btn-success" *ngIf="!num.invalid">Submit</button>
+        <button type="button" class="btn btn-success" *ngIf="num.invalid">Submit</button>
+        <!--<input type="button" (click)="onClickMe(searchBox.value)" value="Submit" />
+        <input type="submit" (click)="onClickMe()" value="Save" />-->
+      </form>
+    </div>
+  </div>
+  

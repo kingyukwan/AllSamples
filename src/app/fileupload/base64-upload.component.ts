@@ -18,7 +18,7 @@ export class Base64UploadComponent {
   loading: boolean = false;
   percentage: number;
   filename: string = "";
-  filesize: number=0;
+  filesize: string=null;
   hasFile: boolean=false;
 
   @ViewChild('fileInput') fileInput: ElementRef;
@@ -72,19 +72,13 @@ onFileChange(event) {
     // const formModel = this.form.value;
     const formModel = this.prepareSave();
     this.loading = true;
-    // In a real-world app you'd have a http request / service call here like
-    // this.http.post('apiUrl', formModel)
-    // setTimeout(() => {
-    //   console.log(formModel);
-    //   alert('done!');
-    //   this.loading = false;
-    // }, 1000);
-    // this.fileuploadservice.getProgress(this.progress);
+    this.percentage = 0;//reset
+
     // this.fileuploadservice.uploadFile(this.progress,formModel);
     return this.http.withUploadProgressListener(progress=>this.updateProgress(progress))
                     .post("/api/file",formModel)
-                    //  .map(result => this.result = result.json().data)
-                    .subscribe();
+                    // .map(result => console.log(result))
+                    .subscribe(result => console.log(result));
 
 
   }
@@ -98,7 +92,7 @@ onFileChange(event) {
     this.form.get('avatar').setValue(null);
     // this.fileInput.nativeElement.value = '';
     this.filename = "";
-    this.filesize = 0;
+    this.filesize = null;
     this.hasFile = false;
     this.percentage = 0;
   }
@@ -119,7 +113,7 @@ public filesSelect(selectedFiles: Ng4FilesSelected): void {
       let file = selectedFiles.files[0];
       this.form.get('avatar').setValue(file);
       this.filename = file.name;
-      this.filesize = file.size;
+      this.filesize = (file.size/(1024*1024)).toFixed(2);
       this.hasFile = true;
     }
     // this.filename = this.selectedFiles.files[0].filename;
