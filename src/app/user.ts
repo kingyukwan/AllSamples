@@ -10,6 +10,7 @@ export class User {
         public city: string,
         public email: string,
         public gender: string,
-        public creditLimit: string
+        public creditLimit: string,
+        public updateDate: Date
       ) { }
 }

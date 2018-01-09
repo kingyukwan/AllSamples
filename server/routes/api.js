@@ -290,20 +290,21 @@ router.post('/custUpdate', (req, res) => {
         db.collection('users')
             .update(
                 { cust_num: req.body.user.num },
-                {
-                    "cust_num" : req.body.user.num, 
-                    "cust_name": req.body.user.name, 
-                    "contactLastName": req.body.user.contactLastName, 
-                    "contactFirstName": req.body.user.contactFirstName, 
-                    "phone": req.body.user.phone, 
-                    "addressLine1": req.body.user.addressLine1, 
-                    "addressLine2": req.body.user.addressLine2, 
-                    "city": req.body.user.city, 
-                    "email": req.body.user.email, 
-                    "gender": req.body.user.gender, 
-                    "creditLimit": req.body.user.creditLimit,
-                    "createDate":"8/1/2018 12:00", 
-                    "updateDate":"8/1/2018 12:00"
+                {$set:
+                    {
+                        "cust_num" : req.body.user.num, 
+                        "cust_name": req.body.user.name, 
+                        "contactLastName": req.body.user.contactLastName, 
+                        "contactFirstName": req.body.user.contactFirstName, 
+                        "phone": req.body.user.phone, 
+                        "addressLine1": req.body.user.addressLine1, 
+                        "addressLine2": req.body.user.addressLine2, 
+                        "city": req.body.user.city, 
+                        "email": req.body.user.email, 
+                        "gender": req.body.user.gender, 
+                        "creditLimit": req.body.user.creditLimit,
+                        "updateDate":req.body.user.updateDate
+                    }
                 },
                 { upsert: false }
             )
