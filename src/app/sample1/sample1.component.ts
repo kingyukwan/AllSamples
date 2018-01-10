@@ -73,13 +73,32 @@ export class Sample1Component {
     this.order.remarks = form.remarks;
     console.log('tslog:'+this.orderSub.date);*/
     console.log('tslog:'+this.userSub.updateDate);
+    this.orderCount = 0;
     this._dataService.getOrder(this.orderSub.num)
-    .subscribe(res => {
+    /*.subscribe(res => {
       this.return = res;
       this.orderCount = res;
       console.log('orderCount: '+ this.orderCount);
+    });*/
+    .subscribe(res => this.processOrder(res));
+    console.log('orderCount2: '+ this.orderCount);
+    this._dataService.custUpdate(this.userSub)
+    .subscribe(res => {
+      this.return = res;
+      console.log('custUpdate'+ res);
+      this.succeed = true;
     });
-    if (this.orderCount > 0){
+  }
+
+  processOrder(orderCnt: any){
+    if (orderCnt > 0){
+      this._dataService.orderUpdate(this.userGet, this.orderSub)
+      .subscribe(res => {
+        this.return = res;
+        console.log('orderUpdate'+ res);
+        this.succeed = true;
+      });
+    }else{
       this._dataService.orderSubmit(this.userGet, this.orderSub)
       //.subscribe(res => this.return = res);
       .subscribe(res => {
@@ -87,21 +106,26 @@ export class Sample1Component {
         console.log('orderSubmit'+ res);
         this.succeed = true;
       });
-    }else{
-      this._dataService.orderUpdate(this.userGet, this.orderSub)
+    }
+  }
+
+  updateOrder(){
+    this._dataService.orderUpdate(this.userGet, this.orderSub)
       .subscribe(res => {
         this.return = res;
         console.log('orderUpdate'+ res);
         this.succeed = true;
       });
-      this._dataService.custUpdate(this.userSub)
+  }
+
+  submitOrder(){
+    this._dataService.orderSubmit(this.userGet, this.orderSub)
+      //.subscribe(res => this.return = res);
       .subscribe(res => {
         this.return = res;
-        console.log('custUpdate'+ res);
+        console.log('orderSubmit'+ res);
         this.succeed = true;
       });
-    }
-    this.orderCount = 0;
   }
 
   collectUser(userRtn: Array<any>){
