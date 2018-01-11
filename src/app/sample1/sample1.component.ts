@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { DataService } from '../data.service';
 import { User } from '../user';
 import { Order } from '../order';
+import * as moment from 'moment';
 
 @Component({
   selector: 'sample1',
@@ -19,13 +20,14 @@ export class Sample1Component {
   return: any;
   userJson: any;
   orderJson: any;
-  userGet = new User('','','','','','','','','','','');
-  userSub = new User('','','','','','','','','','','');
+  userGet = new User('','','','','','','','','','','',new Date());
+  userSub = new User('','','','','','','','','','','',new Date());
   order = new Order('','','','','','','');
   orderSub = new Order('','','','','','','');
   succeed = false;
   orderCount = 0;
   emailPattern = "^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"; 
+  temp: any;
 
   // Create an instance of the DataService through dependency injection
   constructor(private _dataService: DataService) {
@@ -50,17 +52,18 @@ export class Sample1Component {
     /*this._dataService.getOrdersByUser(form.custNum)
     .subscribe(res => this.orders = res);*/
     //this._dataService.orderSubmit(form.custNum, this.order)
-    this.userGet.num = form.num;
-    this.userGet.name = form.custName;
-    this.userGet.contactLastName = form.contactLastName;
-    this.userGet.contactFirstName = form.contactFirstName;
-    this.userGet.phone = form.phone;
-    this.userGet.addressLine1 = form.addressLine1;
-    this.userGet.addressLine2 = form.addressLine2;
-    this.userGet.city = form.city;
-    this.userGet.email = form.email;
-    this.userGet.gender = form.gender;
-    this.userGet.creditLimit = form.creditLimit;
+    this.userSub.num = form.num;
+    this.userSub.name = form.custName;
+    this.userSub.contactLastName = form.contactLastName;
+    this.userSub.contactFirstName = form.contactFirstName;
+    this.userSub.phone = form.phone;
+    this.userSub.addressLine1 = form.addressLine1;
+    this.userSub.addressLine2 = form.addressLine2;
+    this.userSub.city = form.city;
+    this.userSub.email = form.email;
+    this.userSub.gender = form.gender;
+    this.userSub.creditLimit = form.creditLimit;
+    this.userSub.updateDate = new Date();
     /*this.order.num = form.ordNum;
     this.order.date = form.ordDate;
     this.order.requiredDate = form.requiredDate;
@@ -68,15 +71,34 @@ export class Sample1Component {
     this.order.itemQty = form.itemQty;
     this.order.status = form.status;
     this.order.remarks = form.remarks;
-    console.log('tslog:'+this.orderSub.date);
-    console.log('tslog:'+form.ordNum);*/
+    console.log('tslog:'+this.orderSub.date);*/
+    console.log('tslog:'+this.userSub.updateDate);
+    this.orderCount = 0;
     this._dataService.getOrder(this.orderSub.num)
-    .subscribe(res => {
+    /*.subscribe(res => {
       this.return = res;
       this.orderCount = res;
       console.log('orderCount: '+ this.orderCount);
+    });*/
+    .subscribe(res => this.processOrder(res));
+    console.log('orderCount2: '+ this.orderCount);
+    this._dataService.custUpdate(this.userSub)
+    .subscribe(res => {
+      this.return = res;
+      console.log('custUpdate'+ res);
+      this.succeed = true;
     });
-    if (this.orderCount > 0){
+  }
+
+  processOrder(orderCnt: any){
+    if (orderCnt > 0){
+      this._dataService.orderUpdate(this.userGet, this.orderSub)
+      .subscribe(res => {
+        this.return = res;
+        console.log('orderUpdate'+ res);
+        this.succeed = true;
+      });
+    }else{
       this._dataService.orderSubmit(this.userGet, this.orderSub)
       //.subscribe(res => this.return = res);
       .subscribe(res => {
@@ -84,23 +106,26 @@ export class Sample1Component {
         console.log('orderSubmit'+ res);
         this.succeed = true;
       });
-    }else{
-      this._dataService.orderUpdate(this.userGet, this.orderSub)
-      //.subscribe(res => this.return = res);
+    }
+  }
+
+  updateOrder(){
+    this._dataService.orderUpdate(this.userGet, this.orderSub)
       .subscribe(res => {
         this.return = res;
         console.log('orderUpdate'+ res);
         this.succeed = true;
       });
-      this._dataService.custUpdate(this.userSub)
+  }
+
+  submitOrder(){
+    this._dataService.orderSubmit(this.userGet, this.orderSub)
       //.subscribe(res => this.return = res);
       .subscribe(res => {
         this.return = res;
-        console.log('custUpdate'+ res);
+        console.log('orderSubmit'+ res);
         this.succeed = true;
       });
-    }
-    this.orderCount = 0;
   }
 
   collectUser(userRtn: Array<any>){
@@ -117,6 +142,7 @@ export class Sample1Component {
     this.userGet.gender = this.userJson.gender;
     this.userGet.email = this.userJson.email;
     this.userGet.creditLimit = this.userJson.creditLimit;
+    this.userGet.updateDate = this.userJson.updateDate;
     this.orderJson = this.userJson.orders_docs[0];
     this.order.num = this.orderJson.ord_num;
     this.order.date = this.orderJson.ord_date;
@@ -125,15 +151,16 @@ export class Sample1Component {
     this.order.itemQty = this.orderJson.itemQty;
     this.order.status = this.orderJson.status;
     this.order.remarks = this.orderJson.remarks;
-    console.log('backorder: '+this.order.num);
+    //this.temp = this.userGet.updateDate;
+    console.log('updateDate: '+moment(this.userGet.updateDate).format('YYYY-MM-DD HH:mm:ss'));
     //this.orderSub.date = this.orderJson.ord_date;
     this.orderSub = this.order;
     this.userSub = this.userGet;
   }
 
   reset(){
-    this.userGet = new User('','','','','','','','','','','');
-    this.userSub = new User('','','','','','','','','','','');
+    this.userGet = new User('','','','','','','','','','','',new Date());
+    this.userSub = new User('','','','','','','','','','','',new Date());
     this.order = new Order('','','','','','','');
     this.orderSub = new Order('','','','','','','');
     this.succeed = false;
