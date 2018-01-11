@@ -1,4 +1,6 @@
-function initDatagrid() {
+export class Datagrid{
+    constructor(){}
+    initDatagrid() {
     console.log("load datagrid!");
 	$('#dg').datagrid({
         url: "api/orders",
@@ -54,8 +56,8 @@ function initDatagrid() {
         }
     ]);
 
-}
+}}
 	
-$(function () {
-	initDatagrid();
-});
+// $(function () {
+// 	initDatagrid();
+// });
