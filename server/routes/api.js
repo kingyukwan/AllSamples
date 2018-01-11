@@ -333,10 +333,26 @@ router.get('/orders', (req, res) => {
             { $unwind: "$customerDetail"},
             { $project:
                 {
+                    "_id" : 0,
                     "orderNumber" : 1,
+                    "orderDate" : 1,
+                    "requiredDate" : 1,
                     "shippedDate" : 1,
+                    "itemQty" : 1,
+                    "status" : 1,
+                    "remarks" : 1,
                     "customerNumber" : 1,
                     "customerDetail.customerName" : 1,
+                    "customerDetail.contactLastName" : 1,
+                    "customerDetail.contactFirstName" : 1,
+                    "customerDetail.phone" : 1,
+                    "customerDetail.addressLine1" : 1,
+                    "customerDetail.addressLine2" : 1,
+                    "customerDetail.city" : 1,
+                    "customerDetail.title" : 1,
+                    "customerDetail.creditLimit" : 1,
+                    "customerDetail.createDate" : 1,
+                    "customerDetail.updateDate" : 1
                 }
             }
         ])
@@ -344,6 +360,7 @@ router.get('/orders', (req, res) => {
             .toArray()
             .then((orders) => {
                 response.data = orders;
+                response.rows = orders;
                 res.json(response);
             })
             .catch((err) => {

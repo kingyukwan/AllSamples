@@ -1,43 +1,5 @@
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>CheckBox select on DataGrid - jQuery EasyUI Demo</title>
-	<link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="easyui/themes/angular.css">
-    <link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
-	<!--<script src="js/jquery-1.4.4.min.js"></script>
-	<script src="js/jquery.easyui.min.js"></script>-->
-</head>
-<body>
-	<h1>CheckBox select on DataGrid</h1>
-	<div class="demo-info" style="margin-bottom:10px">
-		<div class="demo-tip icon-tip">&nbsp;</div>
-		<div>Click on header checkbox to select or unselect all selections.</div>
-	</div>
+<div class="container">
+	<h2>Order List</h2>
 	
-	<table id="tt" title="Checkbox Select" class="easyui-datagrid" style="width:700px;height:250px"
-			idField="itemid" pagination="true"
-			iconCls="icon-save">
-		<thead>
-			<tr>
-				<th field="ck" checkbox="true"></th>
-				<th field="orderNumber" width="80">Order No</th>
-				<th field="customerName" width="120">Customer Name</th>
-				<th field="contactName" width="80" align="right">Contact Name</th>
-				<th field="contactNo" width="80" align="right">Contact No</th>
-			</tr>
-		</thead>
-		
-		<tbody>
-			<tr *ngFor="let order of orders">
-				<td field="ck" checkbox="true"></td>
-				<td>{{ order.orderNumber }}</td>
-				<td>{{ order.shippedDate }}</td>
-				<td>{{ order.customerNumber }}</td>
-				<td>{{ order.customerDetail.customerName }}</td>
-			</tr>
-		</tbody>
-	
-	</table>
-</body>
-</html>
+	<table id ="dg"></table>
+</div>
